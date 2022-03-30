@@ -1,0 +1,43 @@
+# This docker-compose file is used for testing store implementations.
+#
+
+version: "3.5"
+
+services:
+  postgres:
+    image: "postgres:13"
+    environment:
+      - "POSTGRES_USER=corteza"
+      - "POSTGRES_DB=corteza"
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  mysql:
+    image: "mysql:5"
+    environment:
+      - "MYSQL_DATABASE=corteza"
+      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+
+#  sqlserver:
+#    image: "mcr.microsoft.com/mssql/server:${SQLSERVER_VERSION}"
+#    environment:
+#      - "ACCEPT_EULA=Y"
+#      - "SA_PASSWORD=corteza"
+
+  corteza:
+    image: "golang:1.17"
+    working_dir: "/corteza"
+    volumes:
+      - "./:/corteza"
+    command: "go test -v -timeout 30s /corteza/store/tests/..."
+    environment:
+      RDBMS_SQLITE_DSN: "sqlite3://file::memory:?cache=shared&mode=memory"
+#      RDBMS_MYSQL_DSN:  "root@tcp(mysql:3306)/corteza?parseTime=true"
+      RDBMS_MYSQL_DSN: ""
+#      RDBMS_PGSQL_DSN:  "postgres://corteza:@postgres:5432/corteza?sslmode=disable"
+      RDBMS_PGSQL_DSN: ""
+#      RDBMS_MSSQL_DSN:  "sqlserver://sa:qwe123QWE@sqlserver:1433?database=master&connection+timeout=30"
+      RDBMS_MSSQL_DSN: ""
+#    depends_on:
+#      - postgres
+#      - mysql
+#      - sqlserver
