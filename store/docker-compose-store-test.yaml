@@ -17,11 +17,12 @@ services:
       - "MYSQL_DATABASE=corteza"
       - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
 
-#  sqlserver:
-#    image: "mcr.microsoft.com/mssql/server:${SQLSERVER_VERSION}"
-#    environment:
-#      - "ACCEPT_EULA=Y"
-#      - "SA_PASSWORD=corteza"
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      - "ACCEPT_EULA=Y"
+      - "SA_PASSWORD=corteza20229store_test"
+    ports: ["1433:1433"]
 
   corteza:
     image: "golang:1.17"
@@ -35,7 +36,7 @@ services:
       RDBMS_MYSQL_DSN: ""
 #      RDBMS_PGSQL_DSN:  "postgres://corteza:@postgres:5432/corteza?sslmode=disable"
       RDBMS_PGSQL_DSN: ""
-#      RDBMS_MSSQL_DSN:  "sqlserver://sa:qwe123QWE@sqlserver:1433?database=master&connection+timeout=30"
+#      RDBMS_MSSQL_DSN:  "sqlserver://sa:corteza20229store_test@sqlserver:1433?database=master&connection+timeout=30"
       RDBMS_MSSQL_DSN: ""
 #    depends_on:
 #      - postgres
